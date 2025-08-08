@@ -4,7 +4,7 @@ import java.util.Arrays;
 /* Citation: I used the Google AI Search Overview occasionally for syntax. - Isaac Wu, August 6th, 2025 */
 // 1=right, 2=down, 3=diagonal
 
-public class NoBacktrack {
+public class RightDownDiagonal {
     private static int n = 22;
     private static int[][] board = new int[n][n];
     private static ArrayList<Integer> cheapestTraversion = new ArrayList<Integer>();

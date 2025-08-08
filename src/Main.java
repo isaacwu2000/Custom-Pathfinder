@@ -12,7 +12,7 @@ import java.util.Arrays;
 // Lower numbers are done first because they are more likely to be optimal
 
 public class Main {
-    private static int n = 7;
+    private static int n = 11;
     private static int[][] board = new int[n][n];
     private static ArrayList<Integer> cheapestTraversion = new ArrayList<Integer>();
     private static int minCost;
