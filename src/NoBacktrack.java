@@ -1,18 +1,11 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/*  Citation: I used the Google AI Search Overview
-    and W3 Schools occasionally for syntax.
-    - Isaac Wu, August 8th, 2025 */
+/* Citation: I used the Google AI Search Overview occasionally for syntax. - Isaac Wu, August 6th, 2025 */
+// 1=right, 2=down, 3=diagonal
 
-// Number correspondence:
-// 8↖ 7↑ 5↗
-// 6←    3→
-// 4↙ 2↓ 1↘
-// Lower numbers are done first because they are more likely to be optimal
-
-public class Main {
-    private static int n = 3;
+public class NoBacktrack {
+    private static int n = 22;
     private static int[][] board = new int[n][n];
     private static ArrayList<Integer> cheapestTraversion = new ArrayList<Integer>();
     private static int minCost;
@@ -20,47 +13,32 @@ public class Main {
     private static void FillBoard() {
         for (int i=0; i<n; i++) {for (int j=0; j<n; j++) {board[i][j] = (int)(101*Math.random());}}
     }
-    // todo: check if the move lands on a place you've already gone to
-    // todo: only do moves that are possible
+
     private static void TraverseBoard(int cost, int right, int down, ArrayList<Integer> previousMoves) {
         if (cost < minCost) {
             if (right==n-1 && down==n-1) {
                 cheapestTraversion = (ArrayList<Integer>) previousMoves.clone();
                 minCost = cost;
-            }
-            else {
-                // Doing diagonal first, which will be closer to the cheapest path on average
+            } else if (right == n-1) {
                 ArrayList<Integer> moves = (ArrayList<Integer>) previousMoves.clone();
-                moves.add(1); // ↘
+                moves.add(2);
+                TraverseBoard(cost+board[down+1][right], right, down+1, moves);
+            } else if (down == n-1) {
+                ArrayList<Integer> moves = (ArrayList<Integer>) previousMoves.clone();
+                moves.add(1);
+                TraverseBoard(cost+board[down][right+1], right+1, down, moves);
+            } else {
+                ArrayList<Integer> moves = (ArrayList<Integer>) previousMoves.clone();
+                moves.add(3); // Doing diagonal first, which will be closer to the average cheapest path
                 TraverseBoard(cost+board[down+1][right+1], right+1, down+1, moves);
 
                 moves = (ArrayList<Integer>) previousMoves.clone();
-                moves.add(2); // ↓
+                moves.add(2);
                 TraverseBoard(cost+board[down+1][right], right, down+1, moves);
 
                 moves = (ArrayList<Integer>) previousMoves.clone();
-                moves.add(3); // →
+                moves.add(1);
                 TraverseBoard(cost+board[down][right+1], right+1, down, moves);
-
-                moves = (ArrayList<Integer>) previousMoves.clone();
-                moves.add(4); // ↙
-                TraverseBoard(cost+board[down+1][right-1], right-1, down+1, moves);
-
-                moves = (ArrayList<Integer>) previousMoves.clone();
-                moves.add(5); // ↗
-                TraverseBoard(cost+board[down-1][right+1], right+1, down-1, moves);
-
-                moves = (ArrayList<Integer>) previousMoves.clone();
-                moves.add(6); // ←
-                TraverseBoard(cost+board[down][right-1], right-1, down, moves);
-
-                moves = (ArrayList<Integer>) previousMoves.clone();
-                moves.add(7); // ↑
-                TraverseBoard(cost+board[down-1][right], right, down-1, moves);
-
-                moves = (ArrayList<Integer>) previousMoves.clone();
-                moves.add(8); // ↖
-                TraverseBoard(cost+board[down-1][right-1], right-1, down-1, moves);
             }
         }
     }
