@@ -3,13 +3,12 @@ import java.util.Arrays;
 
 /* Citation:
  https://en.m.wikipedia.org/wiki/Dijkstra%27s_algorithm
- https://en.m.wikipedia.org/wiki/Dijkstra%27s_algorithm
  - Isaac Wu, August 6th, 2025 */
 
 // 1=right, 2=down, 3=diagonal
 
-public class Main {
-    private static int n = 4;
+public class DijkstrasRightDownDiagonal {
+    private static int n = 200;
     private static int[][] board = new int[n][n];
     private static ArrayList<int[]> unvisited = new ArrayList<int[]>(); // int[]={row, col, costFromStart}
     private static ArrayList<int[]> visited = new ArrayList<int[]>(); // int[]={row, col, minCostFromStart}
@@ -80,6 +79,9 @@ public class Main {
         System.out.println("------------");
         for (int[] node : visited) {
             System.out.println(Arrays.toString(node));
+            if (node[0]==n-1 && node[1]==n-1) {
+                System.out.println("Minimum Cost: " + node[2]);
+            }
         }
     }
 }
