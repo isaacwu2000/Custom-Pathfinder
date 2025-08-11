@@ -27,58 +27,59 @@ public class Main {
             }
         }}
     }
-// todo: don't go to nodes from nodes that are already above the lowest cost
 
-    private static void mappingCostsFromStart() {
+    private static boolean mappingCostsFromStart() {
         if (!unvisited.isEmpty()) {
-            int[] defaultNode = {-1, -1, 100*n};
-            int[] currentNode = defaultNode;
+            int[] currentNode = {-1, -1, 100*n};
             for (int[] node : unvisited) {
                 if (node[2] != -1 && node[2]<currentNode[2]) {
                     currentNode = node;
                 }
             }
-            if (currentNode != defaultNode) {
-                for (int i = 0; i < unvisited.size(); i++) {
-                    int[] node = unvisited.get(i);
-                    if (node[0]==currentNode[0] && node[1]==currentNode[1]+1) { // Right
-                        if (node[2]==-1) {
-                            node[2] = currentNode[2]+board[node[0]][node[1]];
-                        } else if (node[2] > currentNode[2]+board[node[0]][node[1]]) {
-                            node[2] = currentNode[2]+board[node[0]][node[1]];
-                        }
-                    } else if (node[0]==currentNode[0]+1 && node[1]==currentNode[1]) { // Bottom
-                        if (node[2]==-1) {
-                            node[2] = currentNode[2]+board[node[0]][node[1]];
-                        } else if (node[2] > currentNode[2]+board[node[0]][node[1]]) {
-                            node[2] = currentNode[2]+board[node[0]][node[1]];
-                        }
-                    } else if (node[0]==currentNode[0]+1 && node[1]==currentNode[1]+1) { // Diagonal
-                        if (node[2]==-1) {
-                            node[2] = currentNode[2]+board[node[0]][node[1]];
-                        } else if (node[2] > currentNode[2]+board[node[0]][node[1]]) {
-                            node[2] = currentNode[2]+board[node[0]][node[1]];
-                        }
+            if (currentNode[0]==n-1 && currentNode[1]==n-1) {
+                visited.add(currentNode);
+                return false;
+            }
+
+            for (int i = 0; i < unvisited.size(); i++) {
+                int[] node = unvisited.get(i);
+                if (node[0]==currentNode[0] && node[1]==currentNode[1]+1) { // Right
+                    if (node[2]==-1) {
+                        node[2] = currentNode[2]+board[node[0]][node[1]];
+                    } else if (node[2] > currentNode[2]+board[node[0]][node[1]]) {
+                        node[2] = currentNode[2]+board[node[0]][node[1]];
+                    }
+                } else if (node[0]==currentNode[0]+1 && node[1]==currentNode[1]) { // Bottom
+                    if (node[2]==-1) {
+                        node[2] = currentNode[2]+board[node[0]][node[1]];
+                    } else if (node[2] > currentNode[2]+board[node[0]][node[1]]) {
+                        node[2] = currentNode[2]+board[node[0]][node[1]];
+                    }
+                } else if (node[0]==currentNode[0]+1 && node[1]==currentNode[1]+1) { // Diagonal
+                    if (node[2]==-1) {
+                        node[2] = currentNode[2]+board[node[0]][node[1]];
+                    } else if (node[2] > currentNode[2]+board[node[0]][node[1]]) {
+                        node[2] = currentNode[2]+board[node[0]][node[1]];
                     }
                 }
-                visited.add(currentNode);
-                unvisited.remove(currentNode);
             }
+            visited.add(currentNode);
+            unvisited.remove(currentNode);
         }
+        return true;
     }
 
     public static void main(String[] args) {
         FillBoard();
         for (int[] row : board) {System.out.println(Arrays.toString(row));}
 
-        for (int i=0; i<n*n; i++) {
-            mappingCostsFromStart();
+        boolean searching = true;
+        while (searching && !unvisited.isEmpty()) {
+            searching = mappingCostsFromStart();
         }
         System.out.println("------------");
         for (int[] node : visited) {
-            if (node[0]==n-1 && node[1]==n-1) {
-                System.out.println(Arrays.toString(node));
-            }
+            System.out.println(Arrays.toString(node));
         }
     }
 }
